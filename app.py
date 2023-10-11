@@ -62,26 +62,38 @@ try:
             ))
         )
         
-        for button in buttons:
+        for i, button in enumerate(buttons, start=1):
             driver.execute_script("arguments[0].scrollIntoView();", button)
+
+            try:  
+                # Get html content and write to a file
+                td_tag_content = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, f'(//td[@tabindex="0"])[{i}]'))).text
+                
+
+            except Exception as ex:
+                print(f"An error occurred while getting the td tag content: {str(ex)}")
+                
             # Button'a tıkla ve 1 saniye bekle
             time.sleep(1) 
             driver.execute_script("arguments[0].click();", button)
             time.sleep(2)
+
             # Beliren butonu bul ve tıkla
             popup_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="modalstrap-button-0"]')))
             popup_button.click()
-
+            extra_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div[1]/section/div/div/div[2]/section/div[2]/div[2]/div/div[2]/div[2]/div[3]')))
+            extra_text = extra_element.text
             # 'description' id'li öğenin yüklenmesini bekle
             description_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'description')))
-
+            
             # öğenin metnini elde et
             description_text = description_element.text
             # Metni dosyaya yazdır
             with open('odevler.txt', 'a') as f:
-                f.write(description_text)
+                f.write(f"Ders Adı: {extra_text}\n")
+                f.write(f"Kitap Adı: {td_tag_content}\n")
+                f.write(f"Açıklama: {description_text}")
                 f.write('\n\n')
-
     except Exception as ex:
         print(f"An error occurred while clicking on the buttons: {str(ex)}")
 
