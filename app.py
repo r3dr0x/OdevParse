@@ -61,7 +61,7 @@ try:
         status_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="status"]')))
         status_text = status_element.text
 
-        if status_text == "Tamamlandı":
+        if status_text == "Değerlendirilmedi":
             description_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'description')))
             description_text = description_element.text
             with open('odevler.txt', 'a') as f:
