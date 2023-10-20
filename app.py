@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-
+chrome_options.add_argument("--window-size=1366,768")
 driver = webdriver.Chrome(options=chrome_options)
 
 # Go to the website of Akakoleji
